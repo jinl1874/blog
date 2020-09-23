@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Egg
+{% endblock %}
+
+{% block nav %}
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'blog:index' %}">Home<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="#">Egg</a>
+    </li>
+    <li class="nav-item">
+        <button type="button" class="btn text-secondary nav-link" data-toggle="tooltip" data-placement="bottom"
+            title="Created by Daoli!">
+            About
+        </button>
+    </li>
+</ul>
+
+<div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">About</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Created by Daoli!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="text-center">
+    <img src='{% static "img/egg.jpg" %}' class="rounded" alt="egg" width="300" height="400">
+</div>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home Page
+{% endblock %}
+
+{% block nav%}
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'blog:index' %}">Home<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'blog:egg' %}">Egg</a>
+    </li>
+    <li class="nav-item">
+        <button type="button" class="btn text-secondary nav-link" data-toggle="tooltip" data-placement="bottom"
+            title="Created by Daoli!">
+            About
+        </button>
+    </li>
+</ul>
+
+<div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">About</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Created by Daoli!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<span class="navbar-text">
+    Always belive that something wonderful is about to happen.
+</span>
+{% endblock %}
+
+{% block body %}
+
+<div class="col-md-8">
+
+    <div class="jumbotron jumbotron-fluid bg-light">
+        <div class="container">
+            <h2 class="display-4">The man is lazy, leaving nothing!</h2>
+        </div>
+    </div>
+    {% if query %}
+    <h2>Search Result</h2>
+    {% elif cate_name %}
+    <h2>'{{ cate_name }}'Article'</h2>
+    {% else %}
+    <h2>Article List</h2>
+    {% endif %}
+
+    {% if error %}
+    <p class="text-danger">{{error}}</p>
+    {% endif %}
+    {% if articles %}
+    {% for article in articles %}
+    <div class="card my-4">
+        <!-- 此处有for循环 -->
+        <div class="card-body">
+            <h5 class="card-title">{{ article.title }}</h5>
+            <p class="card-text">
+                {{ article.summary }} </p>
+            <a href="{% url 'blog:article_detail' article.id %}" class="btn btn-dark btn-sm">detail &raquo;
+            </a>
+
+            <!-- <a href="{% url 'blog:article_detail' article.id %}" class="btn btn-dark">More &raquo;
+            </a> -->
+            <p class="card-text"><small class="text-muted">Last update on {{ article.last_edit_time }}</small></p>
+        </div>
+    </div>
+
+
+
+    {% endfor %}
+    {% else %}
+    <div class="jumbotron jumbotron-fluid bg-light my-4">
+        <div class="container">
+            <p class="lead">No result! Please check your input or select!</p>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<div class="col-md-4">
+    <div class="card my-4">
+        <div class="card-header bg-dark text-white">
+            Search
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <form class="form-inline" method="GET" action="/search/">
+                    {% if query %}
+                    <input class="form-control mr-sm-2" type="text" value="{{ query.q }}" aria-label="Search" name="q">
+                    {% else %}
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="q">
+                    {% endif %}
+                    <input class="btn btn-dark" type="submit" value='GO'>
+                </form>
+                <footer class="blockquote-footer">Search from <cite title="Source Title">Article Title</cite>
+                </footer>
+            </blockquote>
+        </div>
+    </div>
+
+    <div class="card my-4" style="width: 16rem;">
+        <div class="card-header bg-secondary text-white">
+            Category
+        </div>
+        <ul class="list-group">
+            {% for cate in cate_num %}
+            <li class="list-group-item">
+                <a href="{% url 'blog:category' cate.name %}">{{ cate.name }} &nbsp;
+                    <span class="badge badge-light text-white bg-primary">
+                        {{ cate.art_num }}
+                    </span>
+                </a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

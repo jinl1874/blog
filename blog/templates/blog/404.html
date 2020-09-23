@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Error
+{% endblock %}
+
+{% block body %}
+{% if error == 'ValueError' %}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container bg-danger">
+        <h1 class="display-4">URL ERROR</h1>
+        <p class="lead">Please check the url!</p>
+    </div>
+</div>
+
+
+{% endif %}
+{% endblock %}

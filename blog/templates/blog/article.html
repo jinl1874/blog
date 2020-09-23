@@ -1,0 +1,118 @@
+﻿{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ article.title }}
+{% endblock %}
+
+
+{% block nav%}
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item ">
+        <a class="nav-link" href="{% url 'blog:index' %}">Home<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'blog:egg' %}">Egg</a>
+    </li>
+    <li class="nav-item">
+        <button type="button" class="btn text-secondary nav-link" data-toggle="tooltip" data-placement="bottom"
+            title="Created by Daoli!">
+            About
+        </button>
+    </li>
+</ul>
+<span class="navbar-text">
+    I don't believe.
+</span>
+
+{% endblock %}
+
+{% block body %}
+<div class='col-md-8'>
+    <!-- 获取标题 -->
+    <hr>
+    <img class="rounded" src="{{ MEDIA_URL }}{{ article.img_link }}" alt="img" width="700" >
+    <hr>
+    <h3>{{ article.title }}</h3>
+    <p>{{ article.pub_time }} creat by
+        <!-- 把所有的名字都打上去 -->
+        {% for name in  article.author.all %}
+        <!-- 这里可以定义点击名字, 就可以查看到该作者所有的文章 (如果我有空的话)-->
+        <a href="">{{ name }}</a>
+        {% endfor %}
+    </p>
+    <p class="text-muted"><small>clicks: {{ article.times }}</small></p>
+
+
+    <hr>
+
+    {{article.content|safe }}
+    <hr>
+    <br>
+
+    <!-- 按钮触发模态框 -->
+    <p>
+        Comments(<a href="">{{ article.comment_set.count }}</a>) &nbsp;
+        <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#myModal">Add</button>
+    </p>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Comment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'comment:art_comment' article.id %}" method="POST" class="comment-form">
+                        {% csrf_token %}
+
+
+                        <div class="form-group">
+                            <label for="{{ form.name.id_for_label }}">Name</label>
+                            {{ form.name }}
+                            {{ form.name.errors }}
+                        </div class="form-group">
+                        <div>
+                            <label for="{{ form.email.id_for_labe }}">Email</label>
+                            {{ form.email }}
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="form-group my-1">
+                            <label for="{{ form.text.id_for_label }}">Comment</label>
+                            {{ form.content }}
+                            {{ form.contetnt.errors }}
+                        </div>
+                        <div class="modal-footer md-1">
+                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">close</button>
+                            <button class="btn btn-dark btn-sm" type="submit">submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <ul class="list-unstyled comment-list">
+        <!-- 此处也应该有for循环 -->
+        <p>TEST</p>
+        {% for comment in  comment_list %}
+        <li class="media mb-4">
+            <img src="{% static 'img/default.jpg' %}" alt="img" class="d-flex mr-3 rounded-circle" width="50"
+                height="50">
+            <div class="media-body">
+                <h5 class="mt-0">{{ comment.name }}</h5>
+                {{ comment.content }}
+                <br>
+                <time class="small">{{ comment.created_time }}</time>
+            </div>
+        </li>
+        {% endfor %}
+        {% if not comment_list %}
+        Not comment
+        {% endif %}
+    </ul>
+
+</div>
+{% endblock %}

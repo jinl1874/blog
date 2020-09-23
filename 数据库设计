@@ -1,0 +1,24 @@
+数据库：
+	1. 安装好MySQL环境。
+	2. 进入MySQL，输入“create database myblog。
+	3. 打开settings.py文件，找到DATABASES，将其改成：
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.mysql',
+			'NAME': 'myblog',
+			'USER': 'yourname',
+			'PASSWORD': 'yourpassword',
+		}
+	}
+	4. 在myblog目录下的__init__.py中输入:
+	import pymysql
+	pymysql.install_as_MySQLdb()
+	否则会报错"Do you install mysqlclint?"
+数据库设计：
+	一个authors表:author_id(主键), author_name, article_num
+	一个articles表: article_id(主键), title, author(外键), content, pub_time, times(阅读次数), img_link, cate_name(类别), last_edit_time(最后修改时间), summary(摘要)
+	一个comments表: comment_id(主键), title(外键), commentator(缺省值为日期), comment, pub_time
+	一个category表: cate_id, cate_name  
+	
+	
+	

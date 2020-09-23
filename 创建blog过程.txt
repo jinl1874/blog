@@ -1,0 +1,41 @@
+1. 环境: 安装好python和django环境, 并且推荐使用vscode编辑器.
+
+2. 创建项目: 打开cmd, 进入所要创建项目的目录, 然后输入"django-admin startproject myblog". 如果没有错误, 那么目录下会有'myblog'的文件夹. 接着在命令行中输入"python manage.py runserver". 打开浏览器, 输入http://127.0.0.1:8000/ , 如果有django的默认调试页, 那么项目就创建成功.
+
+3. 创建app: 在manage.py同级目录的cmd上, 输入'python manage.py startapp blog'. 在settings.py里找到INSTALLED_APPS, 在后面加上'blog'.
+
+4. 转移数据库:
+	1) 安装好MySQL环境。
+	2) 进入MySQL，输入“create database myblog。
+	3) 打开settings.py文件，找到DATABASES，将其改成：
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.mysql',
+			# 数据库名字
+			'NAME': 'myblog',
+			'USER': 'yourname',
+			'PASSWORD': 'yourpassword',
+		}
+	}
+	4) 在myblog目录下的__init__.py中写入:
+	import pymysql
+	pymysql.install_as_MySQLdb()
+	否则会报错"Do you install mysqlclint?"
+	5) 数据转移
+	生成数据表：命令行中进入manage.py同级目录，
+	再执行 python manage.py makemigrations	，
+	再执行python manage.py migrate。
+	Django会自动在app/migrations/目录下生成移植文件。
+	执行python manage.py sqlmigrate 应用名 文件id 查看SQL语句
+	（例：python manage.py sqlmigrate blog 0001）
+	
+5. 其它设置: 
+	1) 添加超级用户: 运行: 'python manage.py createsuperuser', 分别输入用户名, 邮箱和密码.
+	2) 更改时区: TIME_ZONE = 'Asia/Shanghai'
+	3) 更改语言: 将'django.middleware.locale.LocaleMiddleware'加到MIDDLEWARE, 然后设置 LANGUAGE_CODE = 'zh-hans'
+	4)安装使用ckeditor https://www.jianshu.com/p/65d2a748634b
+	
+6. 将myblog页面下的urls.py下的urlpatterns加上
+"path('', include('blog.urls'))"
+	
+	
